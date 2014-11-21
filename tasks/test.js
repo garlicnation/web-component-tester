@@ -7,26 +7,25 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
+var _      = require('lodash');
 var chalk  = require('chalk');
 var events = require('events');
 
 var CleanKill   = require('../runner/cleankill');
 var CliReporter = require('../runner/clireporter');
 var config      = require('../runner/config');
-var steps       = require('../runner/steps');
+var test        = require('../runner/test');
 
 module.exports = function(grunt) {
   grunt.registerMultiTask('wct-test', 'Runs tests via web-component-tester', function() {
-    var options = config.fromEnv(process.env, process.argv, process.stdout);
-    var emitter = new events.EventEmitter();
-    new CliReporter(emitter, options.output, options);
+    var options = _.merge(config.fromEnv(process.env, process.argv, process.stdout), this.options());
 
     var done = this.async();
-    steps.runTests(options, emitter, function(error) {
+    test(options, function(error) {
       if (error) {
         console.log(chalk.red(error));
       }
-      CleanKill.close(done.bind(null, !error));
+      done(error);
     });
   });
 };

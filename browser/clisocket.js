@@ -53,6 +53,14 @@ CLISocket.prototype.observe = function observe(runner) {
     });
   }.bind(this));
 
+  runner.on('childRunner start', function(childRunner) {
+    this.emitEvent('sub-suite-start', childRunner.share);
+  }.bind(this));
+
+  runner.on('childRunner end', function(childRunner) {
+    this.emitEvent('sub-suite-end', childRunner.share);
+  }.bind(this));
+
   runner.on('end', function() {
     this.emitEvent('browser-end');
   }.bind(this));
@@ -79,6 +87,8 @@ CLISocket.prototype.emitEvent = function emitEvent(event, data) {
 CLISocket.init = function init(done) {
   var browserId = WCT.util.getParam('cli_browser_id');
   if (!browserId) return done();
+  // Only fire up the socket for root runners.
+  if (WCT.ChildRunner.current()) return done();
 
   WCT.util.loadScript(SOCKETIO_LIBRARY, function(error) {
     if (error) return done(error);
