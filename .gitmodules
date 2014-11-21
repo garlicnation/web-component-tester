@@ -16,3 +16,6 @@
 [submodule "vendor/sinon-chai"]
 	path = vendor/sinon-chai
 	url = https://github.com/domenic/sinon-chai
+[submodule "vendor/blanket"]
+	path = vendor/blanket
+	url = git@github.com:alex-seville/blanket.git
