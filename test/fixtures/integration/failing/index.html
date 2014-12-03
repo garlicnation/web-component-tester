@@ -6,10 +6,12 @@
   </head>
   <body>
     <script>
-      suite('suite 3', function() {
-        test('nested test 3', function() {});
+      WCT.loadSuites(['tests.html', 'tests.js']);
+
+      test('inline passing test', function() {});
+      test('inline failing test', function() {
+        assert.isTrue(false);
       });
-      test('test 3', function() {});
     </script>
   </body>
 </html>

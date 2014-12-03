@@ -6,7 +6,10 @@
   </head>
   <body>
     <script>
-      WCT.loadSuites([]);
+      test('passing test', function() {});
+      test('failing test', function() {
+        assert.isTrue(false);
+      });
     </script>
   </body>
 </html>
